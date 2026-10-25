@@ -1,735 +1,567 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Little Story of Us ♡</title>
-
+<title>Beyond the Distance ♡</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Dancing+Script:wght@500;600;700&display=swap');
 
 :root {
-  --cream: #fff8f1;
-  --pink: #f5dfe2;
-  --rose: #c78e9a;
-  --deep: #77545d;
-  --ink: #6f5355;
-  --gold: #d6b58a;
+  --pink:#ef9dbb;
+  --pink2:#ffd5e4;
+  --cream:#fff9f3;
+  --ink:#59434e;
+  --muted:#987e89;
+  --glass:rgba(255,255,255,.76);
 }
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-body {
-  background: var(--cream);
-  color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-}
-
-button {
-  font: inherit;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #d8a5ae, #d8bd92);
-  z-index: 100;
-  transition: width 1s ease;
-}
-
-.screen {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 30px 22px;
-  overflow-y: auto;
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(1.035);
-  transition:
-    opacity 1s ease,
-    transform 1.2s cubic-bezier(.2,.7,.2,1),
-    visibility 1s;
-}
-
-.screen.active {
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1);
-  z-index: 2;
-}
-
-.screen::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh;
+  font-family:'Be Vietnam Pro',sans-serif;
+  color:var(--ink);
   background:
-    radial-gradient(ellipse at 15% 15%, #f4dce380, transparent 45%),
-    radial-gradient(ellipse at 90% 85%, #ead9c580, transparent 45%);
+    radial-gradient(ellipse at 15% 10%,#ffe2ed 0,transparent 42%),
+    radial-gradient(ellipse at 85% 90%,#ffe9d7 0,transparent 42%),
+    linear-gradient(135deg,#fff9f4,#fff0f6);
+  overflow-x:hidden;
 }
-
-.content {
-  position: relative;
-  z-index: 2;
-  width: min(100%, 720px);
-  margin: auto;
-  text-align: center;
-  animation: rise 1.1s both;
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:3px solid #e88bb0;outline-offset:3px
 }
-
-@keyframes rise {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+#sky{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.floating{
+  position:absolute;bottom:-35px;opacity:.55;
+  animation:floatUp linear forwards;pointer-events:none
 }
-
-.eyebrow {
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: #ad8189;
-  margin-bottom: 24px;
+@keyframes floatUp{
+  to{transform:translateY(-115vh) rotate(30deg);opacity:0}
 }
-
-h1, h2, .serif {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 400;
+header,.app{position:relative;z-index:1}
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px clamp(16px,5vw,60px);gap:12px
 }
-
-h1 {
-  font-size: clamp(42px, 8vw, 78px);
-  line-height: 1.15;
-  color: var(--deep);
+.logo{font-weight:800;letter-spacing:2px;font-size:12px}
+.logo span{color:#db85a8}
+.music{
+  border:1px solid #f2c6d6;background:#ffffffb8;
+  border-radius:30px;padding:10px 15px;color:var(--ink)
 }
-
-h2 {
-  font-size: clamp(32px, 6vw, 52px);
-  line-height: 1.25;
-  color: var(--deep);
+.app{width:min(760px,92%);margin:20px auto 65px}
+.progress-wrap{margin:0 auto 20px}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+.progress{height:6px;border-radius:10px;background:#f4dce5;overflow:hidden}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,#ee9fbd,#e9b99a);transition:width .5s}
+.screen{
+  background:var(--glass);border:1px solid #ffffffd9;
+  border-radius:28px;padding:clamp(22px,5vw,45px);
+  box-shadow:0 20px 65px #bd8b9b18,0 3px 12px #bd8b9b0d;
+  backdrop-filter:blur(15px);
+  animation:appear .55s ease both;
 }
-
-p {
-  font-size: 14px;
-  line-height: 2;
-  color: #8b7074;
+@keyframes appear{from{opacity:0;transform:translateY(14px) scale(.99)}to{opacity:1;transform:none}}
+.center{text-align:center}
+.eyebrow{font-size:11px;letter-spacing:3px;color:#d182a2;font-weight:700}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(28px,6vw,48px);line-height:1.2;margin:15px 0}
+h2{font-size:clamp(23px,4vw,32px);line-height:1.3}
+p{line-height:1.85}
+.script{font-family:'Dancing Script',cursive;color:#d67fa3;font-size:clamp(30px,6vw,45px)}
+.muted{color:var(--muted);font-size:14px}
+.emoji{font-size:58px;margin:12px 0}
+.primary,.secondary,.choice,.tile,.flower,.card{
+  border:0;transition:transform .18s,box-shadow .18s,background .18s
 }
-
-.subtitle {
-  margin-top: 20px;
-  letter-spacing: 1px;
-  font-size: 13px;
+.primary{
+  padding:14px 24px;border-radius:30px;color:white;font-weight:700;
+  background:linear-gradient(120deg,#e992b4,#edb6a9);
+  box-shadow:0 8px 20px #e992b43b
 }
-
-.italic {
-  font-style: italic;
-  color: #b77d8a;
+.primary:hover,.secondary:hover,.choice:hover{transform:translateY(-2px)}
+.secondary{
+  padding:12px 18px;border-radius:25px;background:white;
+  color:var(--ink);border:1px solid #f1d7e1
 }
-
-button.primary {
-  border: 1px solid #e4c6ca;
-  border-radius: 999px;
-  padding: 14px 28px;
-  margin-top: 30px;
-  background: #fffaf7cc;
-  color: #805b64;
-  transition: .3s;
-  letter-spacing: .4px;
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:25px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0}
+.choice{
+  background:#fff8fb;border:1px solid #f2d9e3;border-radius:17px;
+  padding:16px 8px;color:var(--ink);min-height:75px
 }
-
-button.primary:hover {
-  background: #efd6da;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px #c994a522;
+.choice:hover,.choice.selected{background:#ffe5ef;border-color:#e89bb8}
+.status{min-height:28px;text-align:center;color:#c8799a;font-size:13px;margin:10px 0}
+.gamebox{
+  border:1px solid #f3dce5;background:#fff9fc;
+  border-radius:20px;padding:18px;margin:18px 0
 }
-
-.small-note {
-  margin-top: 18px;
-  font-size: 11px;
-  opacity: .7;
+.game-stat{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted)}
+input,textarea{
+  width:100%;padding:13px 15px;border-radius:13px;
+  border:1px solid #edcedb;background:#fffdfd;color:var(--ink);
+  margin:7px 0 12px
 }
-
-.flower {
-  font-size: 43px;
-  margin-bottom: 20px;
-  display: inline-block;
-  animation: float 4s ease-in-out infinite;
+textarea{min-height:115px;resize:vertical}
+.heart-board{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;min-height:100px;align-items:center}
+.heart-target{font-size:35px;border:0;background:none;padding:5px;transition:transform .15s}
+.heart-target:hover{transform:scale(1.2)}
+.flower-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.flower{background:#fff;border:1px solid #f3dce5;border-radius:16px;padding:18px 5px;font-size:30px}
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.card{aspect-ratio:1;border-radius:14px;background:#fbe5ed;color:#cf80a0;font-size:25px}
+.card.open,.card.matched{background:#fff;color:var(--ink);border:1px solid #f1c7d8}
+.card.matched{opacity:.6}
+.wheel{
+  width:min(270px,75vw);aspect-ratio:1;border-radius:50%;margin:15px auto;
+  background:conic-gradient(#ffd9e6 0 45deg,#fff3d9 45deg 90deg,#f6c7d8 90deg 135deg,#fff 135deg 180deg,#f7d8e5 180deg 225deg,#ffeddc 225deg 270deg,#f4bfd4 270deg 315deg,#fff7ee 315deg);
+  border:7px solid white;box-shadow:0 5px 25px #d79bb633;
+  display:grid;place-items:center;font-size:38px;transition:transform 1.3s cubic-bezier(.1,.7,.1,1)
 }
-
-@keyframes float {
-  50% { transform: translateY(-8px) rotate(4deg); }
+.puzzle{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:330px;margin:18px auto}
+.puzzle button{aspect-ratio:1;border:0;border-radius:12px;background:#f8dce7;color:#8d536c;font-size:25px;font-weight:700}
+.puzzle button.blank{background:#fff8fb}
+.bubbles{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:110px}
+.bubble{width:52px;height:52px;border:1px solid #f1b9d0;border-radius:50%;background:linear-gradient(135deg,#ffe4f0,#fff);font-size:22px}
+.chapter-list{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:20px}
+.chapter{display:flex;align-items:center;gap:11px;text-align:left;padding:13px;border:1px solid #f2dce5;border-radius:15px;background:#fff9fc;color:var(--ink)}
+.chapter small{display:block;color:var(--muted);margin-top:4px}
+.chapter .num{font-size:21px}
+.letter{
+  background:linear-gradient(145deg,#fffdf8,#fff3f6);
+  border:1px solid #f0d7df;border-radius:5px;padding:clamp(18px,5vw,35px);
+  box-shadow:0 7px 22px #b9809410;text-align:left
 }
-
-.date-card {
-  width: min(100%, 400px);
-  margin: 30px auto;
-  padding: 32px 20px;
-  border: 1px solid #e7d2cc;
-  background: #fffaf5b8;
-  box-shadow: 0 20px 70px #b9918d12;
-  position: relative;
-}
-
-.date-card::before,
-.date-card::after {
-  content: "✿";
-  position: absolute;
-  color: #d5a6ad;
-  font-size: 20px;
-}
-
-.date-card::before { top: 12px; left: 14px; }
-.date-card::after { bottom: 12px; right: 14px; }
-
-.date {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(34px, 7vw, 50px);
-  color: #a97781;
-  margin: 12px 0;
-}
-
-.rule {
-  width: 48px;
-  height: 1px;
-  background: #d6b6ac;
-  margin: 22px auto;
-}
-
-.memory {
-  max-width: 500px;
-  margin: 24px auto 0;
-}
-
-.memory p {
-  margin: 14px 0;
-}
-
-.letter {
-  max-width: 570px;
-  margin: 26px auto 0;
-  padding: clamp(24px, 5vw, 44px);
-  background:
-    linear-gradient(#fffaf3ed, #fffaf3ed),
-    repeating-linear-gradient(
-      transparent 0px,
-      transparent 30px,
-      #e8d5ce 31px
-    );
-  border: 1px solid #ead8cf;
-  box-shadow: 0 25px 70px #9d777014;
-  text-align: left;
-  position: relative;
-}
-
-.letter::before {
-  content: "♡";
-  position: absolute;
-  top: 13px;
-  right: 20px;
-  font-size: 23px;
-  color: #cb9da3;
-}
-
-.letter p {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 15px;
-  line-height: 2.05;
-  color: #795f61;
-  margin-bottom: 15px;
-}
-
-.letter .signature {
-  text-align: right;
-  font-style: italic;
-  color: #b07e87;
-  margin: 0;
-}
-
-.choices {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 28px;
-}
-
-.choices button {
-  padding: 13px 21px;
-  border: 1px solid #e5c9ce;
-  border-radius: 999px;
-  background: #fffaf5;
-  color: #805d66;
-  transition: .25s;
-}
-
-.choices button:hover {
-  background: #efd8dc;
-  transform: translateY(-2px);
-}
-
-.response {
-  min-height: 26px;
-  margin-top: 22px;
-  font-size: 13px;
-  color: #a67581;
-}
-
-.final-screen {
-  background:
-    radial-gradient(ellipse at 50% 100%, #362a47 0%, #17172e 45%, #101323 100%);
-  color: #fff4f0;
-}
-
-.final-screen::before {
-  background:
-    radial-gradient(circle at 50% 35%, #a17a9c19, transparent 48%),
-    linear-gradient(transparent, #10132355);
-}
-
-.final-screen h2 { color: #fff0ee; }
-.final-screen p { color: #d9c5d8; }
-.final-screen .eyebrow { color: #e3bdcf; }
-
-#sky {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.final-content {
-  position: relative;
-  z-index: 3;
-}
-
-.final-heart {
-  color: #efb9d0;
-  font-size: 32px;
-  animation: heartbeat 2s infinite;
-  margin-bottom: 22px;
-}
-
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  15% { transform: scale(1.13); }
-  30% { transform: scale(1); }
-  45% { transform: scale(1.08); }
-}
-
-.floating-heart {
-  position: fixed;
-  bottom: -30px;
-  z-index: 2;
-  pointer-events: none;
-  animation: floatUp 7s linear forwards;
-  color: #efbdd1;
-  opacity: .8;
-}
-
-@keyframes floatUp {
-  from { transform: translateY(0) rotate(0deg); opacity: 0; }
-  10% { opacity: .8; }
-  to { transform: translateY(-110vh) rotate(35deg); opacity: 0; }
-}
-
-.top-controls {
-  position: fixed;
-  right: 18px;
-  top: 18px;
-  z-index: 110;
-  display: flex;
-  gap: 8px;
-}
-
-.control {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid #e5d1d0;
-  background: #fffaf0d9;
-  color: #956c76;
-  display: grid;
-  place-items: center;
-  font-size: 15px;
-}
-
-.final-screen ~ .top-controls,
-body:has(.final-screen.active) .control {
-  border-color: #4d4565;
-  background: #201e36cc;
-  color: #f2d9e7;
-}
-
-.chapter-label {
-  position: fixed;
-  bottom: 18px;
-  left: 22px;
-  z-index: 10;
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: #b09191;
-}
-
-.final-screen.active ~ .chapter-label {
-  color: #b9a8ca;
-}
-
-@media (max-width: 480px) {
-  .screen { padding: 66px 20px 48px; }
-  .letter { padding: 27px 22px; }
-  .letter p { font-size: 14px; }
-  .choices { flex-direction: column; align-items: stretch; }
-  .choices button { width: 100%; }
-  .eyebrow { letter-spacing: 3px; }
+.letter p{white-space:pre-line}
+footer{text-align:center;color:#b194a0;font-size:11px;margin-top:24px}
+@media(max-width:500px){
+  header{padding:15px}.app{margin-top:12px}
+  .grid{gap:7px}.choice{font-size:12px;padding:12px 4px}
+  .chapter-list{grid-template-columns:1fr}
+  .screen{border-radius:22px}
 }
 </style>
 </head>
-
 <body>
+<div id="sky"></div>
+<header>
+  <div class="logo">BEYOND <span>THE DISTANCE ♡</span></div>
+  <button class="music" id="musicBtn">♫ Bật nhạc</button>
+</header>
 
-<div id="progress"></div>
-
-<div class="top-controls">
-  <button class="control" id="musicBtn" aria-label="Bật tắt nhạc" title="Bật/tắt nhạc">♫</button>
-  <button class="control" id="restartBtn" aria-label="Bắt đầu lại" title="Bắt đầu lại">↺</button>
-</div>
-
-<div class="chapter-label" id="chapterLabel">A LITTLE STORY OF US · 01 / 05</div>
-
-<!-- CHAPTER 1 -->
-<section class="screen active" id="s1">
-  <div class="content">
-    <div class="eyebrow">A little story of us</div>
-    <div class="flower">🌷</div>
-    <h1>Có một người...</h1>
-    <h2 class="italic">tớ vẫn nhớ.</h2>
-    <p class="subtitle">Và người ấy đang đọc những dòng này.</p>
-    <button class="primary" onclick="nextScreen(2)">Mở câu chuyện ♡</button>
-    <p class="small-note">Một lá thư nhỏ, dành riêng cho cậu.</p>
+<main class="app">
+  <div class="progress-wrap" id="progressWrap" hidden>
+    <div class="progress-label"><span id="progressName">HÀNH TRÌNH</span><span id="progressCount">0/14</span></div>
+    <div class="progress"><div id="progressBar"></div></div>
   </div>
-</section>
-
-<!-- CHAPTER 2 -->
-<section class="screen" id="s2">
-  <div class="content">
-    <div class="eyebrow">Chapter 02 · The beginning</div>
-    <h2>Cậu còn nhớ<br>ngày ấy không?</h2>
-    <div class="date-card">
-      <p>NGÀY CHÚNG MÌNH QUEN NHAU</p>
-      <div class="date">11 · 07 · 2026</div>
-      <div class="rule"></div>
-      <p class="italic">Một ngày bình thường,<br>nhưng lại trở thành một kỷ niệm đặc biệt.</p>
-    </div>
-    <p>Có những ngày trôi qua rất nhanh,<br>nhưng khi nhớ lại vẫn thấy thật dịu dàng.</p>
-    <button class="primary" onclick="nextScreen(3)">Điều tớ muốn kể →</button>
-  </div>
-</section>
-
-<!-- CHAPTER 3 -->
-<section class="screen" id="s3">
-  <div class="content">
-    <div class="eyebrow">Chapter 03 · Somewhere in time</div>
-    <div class="flower">🕊️</div>
-    <h2>Đôi khi tớ nhớ...</h2>
-    <div class="memory">
-      <p>Nhớ những lần chúng mình nói chuyện thật lâu, kể nhau nghe cả những điều chẳng có gì đặc biệt.</p>
-      <div class="rule"></div>
-      <p>Rồi chẳng biết từ lúc nào, hai đứa dần ít nói với nhau hơn. Mọi thứ cứ thế thay đổi, nhẹ nhàng đến mức có khi chẳng ai nhận ra.</p>
-      <div class="rule"></div>
-      <p class="italic">Tớ không nghĩ mọi kỷ niệm đều cần một cái kết hoàn hảo. Nhưng tớ vẫn trân trọng những điều tốt đẹp chúng mình từng có.</p>
-    </div>
-    <button class="primary" onclick="nextScreen(4)">Đọc lá thư của tớ ♡</button>
-  </div>
-</section>
-
-<!-- CHAPTER 4 -->
-<section class="screen" id="s4">
-  <div class="content">
-    <div class="eyebrow">Chapter 04 · A letter for you</div>
-    <h2>Một chút thật lòng.</h2>
-    <div class="letter">
-      <p id="letterText">Cậu à,</p>
-      <p>Tớ không biết phải bắt đầu thế nào cho thật tự nhiên. Có lẽ chỉ là gần đây tớ nhớ đến những lúc chúng mình còn nói chuyện với nhau nhiều như trước.</p>
-      <p>Tớ biết mọi thứ đã khác đi. Tớ không muốn nhắc lại chuyện cũ để khiến cậu khó xử, cũng không mong cậu phải trả lời ngay điều gì.</p>
-      <p>Chỉ là tớ nghĩ, nếu cả hai vẫn thấy thoải mái, chúng mình có thể thử bắt đầu bằng một cuộc trò chuyện nhỏ. Không cần vội vàng, cũng chẳng cần hứa trước điều gì.</p>
-      <p>Nếu cậu không muốn thì tớ vẫn tôn trọng quyết định của cậu. Dù thế nào, tớ vẫn mong cậu có thật nhiều niềm vui.</p>
-      <p class="signature">— Từ tớ, với sự chân thành ♡</p>
-    </div>
-    <button class="primary" onclick="nextScreen(5)">Đến lời cuối cùng →</button>
-  </div>
-</section>
-
-<!-- CHAPTER 5 -->
-<section class="screen final-screen" id="s5">
-  <canvas id="sky"></canvas>
-  <div class="content final-content">
-    <div class="eyebrow">Chapter 05 · A little wish</div>
-    <div class="final-heart">♡</div>
-    <h2>Nếu cậu cũng muốn...</h2>
-    <p style="margin-top:20px">
-      Chúng mình có thể nói chuyện lại nhé?<br>
-      Cứ từ từ thôi, như hai người bạn bắt đầu hiểu nhau thêm lần nữa.
-    </p>
-    <div class="choices">
-      <button onclick="chooseAnswer('yes')">Ừ, mình nói chuyện nhé ♡</button>
-      <button onclick="chooseAnswer('time')">Tớ cần thêm thời gian</button>
-    </div>
-    <div class="response" id="response"></div>
-    <p class="small-note" style="margin-top:30px">
-      Cảm ơn cậu đã đọc đến đây.<br>
-      Mong những ngày của cậu luôn dịu dàng.
-    </p>
-    <button class="primary" onclick="restartStory()">Đọc lại từ đầu ↺</button>
-  </div>
-</section>
+  <section class="screen" id="screen"></section>
+  <footer>made with a little courage & a lot of sincerity ♡</footer>
+</main>
 
 <script>
-/* CHUYỂN CHƯƠNG */
-let currentScreen = 1;
-const totalScreens = 5;
-
-function nextScreen(number) {
-  document.querySelectorAll('.screen').forEach(screen => {
-    screen.classList.remove('active');
-  });
-
-  currentScreen = number;
-  document.getElementById('s' + number).classList.add('active');
-
-  document.getElementById('progress').style.width =
-    ((number - 1) / (totalScreens - 1) * 100) + '%';
-
-  document.getElementById('chapterLabel').textContent =
-    'A LITTLE STORY OF US · 0' + number + ' / 05';
-
-  if (number === 5) {
-    startStars();
-    heartInterval = setInterval(createHeart, 1600);
-  } else {
-    clearInterval(heartInterval);
-  }
-
-  if (number === 4) {
-    revealLetter();
-  }
-}
-
-/* HIỆU ỨNG CHỮ TRONG THƯ */
-let letterRevealed = false;
-
-function revealLetter() {
-  if (letterRevealed) return;
-  letterRevealed = true;
-
-  const paragraphs = document.querySelectorAll('#s4 .letter p');
-  paragraphs.forEach((p, index) => {
-    p.style.opacity = '0';
-    p.style.transform = 'translateY(8px)';
-    p.style.transition = `opacity .8s ease ${index * .32}s, transform .8s ease ${index * .32}s`;
-
-    requestAnimationFrame(() => {
-      p.style.opacity = '1';
-      p.style.transform = 'translateY(0)';
-    });
-  });
-}
-
-/* PHẢN HỒI CUỐI */
-function chooseAnswer(type) {
-  const response = document.getElementById('response');
-
-  if (type === 'yes') {
-    response.textContent =
-      'Cảm ơn cậu. Mình cứ bắt đầu bằng một cuộc trò chuyện nhé. ♡';
-  } else {
-    response.textContent =
-      'Không sao đâu. Cậu cứ dành thời gian cho bản thân nhé. ♡';
-  }
-}
-
-/* BẮT ĐẦU LẠI */
-function restartStory() {
-  letterRevealed = false;
-  clearInterval(heartInterval);
-  document.getElementById('response').textContent = '';
-  nextScreen(1);
-}
-
-document.getElementById('restartBtn').addEventListener('click', restartStory);
-
-/* BẦU TRỜI SAO */
-const canvas = document.getElementById('sky');
-const ctx = canvas.getContext('2d');
-let stars = [];
-let animationStarted = false;
-let heartInterval;
-
-function resizeCanvas() {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
-  canvas.style.width = window.innerWidth + 'px';
-  canvas.style.height = window.innerHeight + 'px';
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  stars = Array.from({length: 130}, () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    r: Math.random() * 1.6 + .3,
-    phase: Math.random() * Math.PI * 2,
-    speed: Math.random() * .025 + .006
-  }));
-}
-
-function drawStars() {
-  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-  stars.forEach(star => {
-    star.phase += star.speed;
-    const alpha = .25 + (Math.sin(star.phase) + 1) * .35;
-
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255, 230, 241, ${alpha})`;
-    ctx.fill();
-  });
-
-  if (animationStarted) {
-    requestAnimationFrame(drawStars);
-  }
-}
-
-function startStars() {
-  if (animationStarted) return;
-  animationStarted = true;
-  resizeCanvas();
-  drawStars();
-}
-
-window.addEventListener('resize', () => {
-  if (animationStarted) resizeCanvas();
-});
-
-/* TRÁI TIM BAY NHẸ */
-function createHeart() {
-  if (!document.getElementById('s5').classList.contains('active')) return;
-
-  const heart = document.createElement('div');
-  heart.className = 'floating-heart';
-  heart.textContent = Math.random() > .5 ? '♡' : '♥';
-  heart.style.left = Math.random() * 100 + 'vw';
-  heart.style.fontSize = (10 + Math.random() * 14) + 'px';
-  heart.style.animationDuration = (5 + Math.random() * 4) + 's';
-
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 9500);
-}
-
-/* NHẠC PIANO TẠO BẰNG WEB AUDIO, KHÔNG CẦN TẢI FILE */
-let audioContext = null;
-let musicOn = false;
-let musicTimer = null;
-let noteIndex = 0;
-
-const melody = [
-  [261.63, 329.63, 392.00],
-  [293.66, 349.23, 440.00],
-  [261.63, 329.63, 392.00],
-  [246.94, 329.63, 369.99],
-  [220.00, 293.66, 349.23],
-  [261.63, 329.63, 392.00],
-  [196.00, 293.66, 392.00],
-  [220.00, 329.63, 440.00]
+const $=s=>document.querySelector(s);
+const screen=$('#screen');
+const chapters=[
+ ['Pinky Catch','Bắt những trái tim'],
+ ['Flower Garden','Khu vườn nhỏ'],
+ ['Sweet Memory','Ghép cặp dễ thương'],
+ ['Guess My Birthday','Đoán sinh nhật tớ'],
+ ['Find the Kitty','Tìm mèo con'],
+ ['Lucky Wheel','Vòng quay may mắn'],
+ ['Puzzle Love','Ghép tranh trái tim'],
+ ['Little Quiz','Câu đố nhỏ'],
+ ['Tiny Claw','Máy gắp quà'],
+ ['Bubble Pop','Bong bóng niềm vui'],
+ ['Little Journal','Nhật ký nhỏ'],
+ ['Secret Date','Mật mã ngày sinh'],
+ ['The Apology','Lá thư xin lỗi'],
+ ['One Last Wish','Điều ước cuối']
 ];
+let unlocked=0,done=new Set(),musicOn=false,audioCtx=null,musicTimer=null;
+let cleanup=null;
 
-function playChord(notes) {
-  if (!audioContext || !musicOn) return;
+function renderProgress(i){
+ $('#progressWrap').hidden=false;
+ $('#progressName').textContent=chapters[i][0].toUpperCase();
+ $('#progressCount').textContent=`${done.size}/14`;
+ $('#progressBar').style.width=(done.size/14*100)+'%';
+}
+function render(html,i=null){
+ if(cleanup){cleanup();cleanup=null}
+ if(i!==null)renderProgress(i);
+ screen.innerHTML=html;
+ screen.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function btn(label,fn,cls='primary'){
+ const b=document.createElement('button');b.className=cls;b.textContent=label;b.onclick=fn;return b;
+}
+function actions(...buttons){
+ const d=document.createElement('div');d.className='actions';
+ buttons.forEach(b=>d.appendChild(b));return d;
+}
+function msg(t){const el=$('#status');if(el)el.textContent=t}
+function markDone(i){
+ done.add(i);unlocked=Math.max(unlocked,i+1);
+ $('#progressCount').textContent=`${done.size}/14`;
+ $('#progressBar').style.width=(done.size/14*100)+'%';
+}
+function reward(i,text){
+ markDone(i);
+ render(`<div class="center"><div class="emoji">🌷</div><div class="eyebrow">CHAPTER COMPLETED</div><h2>Giỏi lắm, cậu!</h2><p>${text}</p><p class="script">Một chút dịu dàng gửi đến cậu ♡</p></div>`,i);
+ screen.appendChild(actions(
+  btn(i===13?'Xem kết thúc':'Chương tiếp theo →',()=>openChapter(Math.min(i+1,13))),
+  btn('Bản đồ chương',showMap,'secondary')
+ ));
+}
+function start(){
+ $('#progressWrap').hidden=true;
+ render(`<div class="center">
+  <div class="eyebrow">A LITTLE JOURNEY FOR YOU</div>
+  <div class="emoji">💌</div>
+  <h1>Beyond the<br><span class="script">Distance</span></h1>
+  <p>Có một điều tớ muốn nói với cậu.<br>Nhưng trước tiên, cùng chơi vài trò nho nhỏ nhé?</p>
+  <p class="muted">14 chương · mini game · một lá thư nhỏ</p>
+  <div class="actions" id="startActions"></div>
+  <p class="muted" style="margin-top:24px;font-size:12px">11/07/2026</p>
+ </div>`);
+ $('#startActions').append(btn('Bắt đầu hành trình ♡',()=>openChapter(0)));
+}
+function showMap(){
+ if(cleanup){cleanup();cleanup=null}
+ render(`<div class="eyebrow">YOUR LITTLE JOURNEY</div><h2>Bản đồ hành trình 🌸</h2><p class="muted">Chọn một chương đã mở khóa để chơi lại nhé.</p><div class="chapter-list" id="chapterList"></div>`);
+ const list=$('#chapterList');
+ chapters.forEach((c,i)=>{
+  const b=document.createElement('button');b.className='chapter';
+  b.disabled=i>unlocked;
+  b.style.opacity=i>unlocked?'.42':'1';
+  b.innerHTML=`<span class="num">${i<done.size&&done.has(i)?'💗':i>unlocked?'🔒':'🌷'}</span><span><b>${String(i+1).padStart(2,'0')}. ${c[0]}</b><small>${c[1]}</small></span>`;
+  b.onclick=()=>openChapter(i);list.appendChild(b);
+ });
+ screen.appendChild(actions(btn('Về trang đầu',start,'secondary')));
+}
+function openChapter(i){
+ if(i>unlocked){showMap();return}
+ switch(i){
+ case 0: pinkyCatch(i);break;
+ case 1: flowerGarden(i);break;
+ case 2: memoryGame(i);break;
+ case 3: birthday(i);break;
+ case 4: kitty(i);break;
+ case 5: luckyWheel(i);break;
+ case 6: puzzleGame(i);break;
+ case 7: littleQuiz(i);break;
+ case 8: clawGame(i);break;
+ case 9: bubblePop(i);break;
+ case 10: journal(i);break;
+ case 11: secretDate(i);break;
+ case 12: apology(i);break;
+ case 13: finalWish(i);break;
+ }
+}
 
-  const now = audioContext.currentTime;
-
-  notes.forEach((frequency, index) => {
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-
-    oscillator.type = 'sine';
-    oscillator.frequency.value = frequency;
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(index === 0 ? .055 : .026, now + .08);
-    gain.gain.exponentialRampToValueAtTime(.0001, now + 2.1);
-
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
-
-    oscillator.start(now);
-    oscillator.stop(now + 2.2);
+/* 01 — BẮT TRÁI TIM */
+function pinkyCatch(i){
+ let score=0,ended=false;
+ render(`<div class="eyebrow">CHAPTER 01 · PINKY CATCH</div><h2>Bắt lấy những trái tim 💗</h2>
+ <p>Nhấn vào trái tim để thu thập đủ 10 trái tim nhé. Không cần vội đâu!</p>
+ <div class="gamebox"><div class="game-stat"><span>Trái tim</span><b id="score">0 / 10</b></div><div class="heart-board" id="heartBoard"></div></div><div class="status" id="status"></div>`,i);
+ const board=$('#heartBoard');
+ function fill(){
+  board.innerHTML='';
+  ['💗','💖','💕','💝','💓','💘'].sort(()=>Math.random()-.5).slice(0,5).forEach((h,j)=>{
+   const b=btn(h,()=>{
+    if(ended)return;score++;$('#score').textContent=`${score} / 10`;
+    if(score>=10){ended=true;reward(i,'Cậu đã thu thập đủ trái tim rồi. Có những điều nhỏ bé cũng đủ làm một ngày dịu dàng hơn.');}
+    else{msg('Một trái tim nữa nè! ♡');fill()}
+   },'heart-target');board.appendChild(b);
   });
+ }
+ fill();
 }
 
-function startMusic() {
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+/* 02 — VƯỜN HOA */
+function flowerGarden(i){
+ render(`<div class="eyebrow">CHAPTER 02 · FLOWER GARDEN</div><h2>Tặng mình một bó hoa nhé 🌷</h2>
+ <p>Chọn 3 bông hoa cậu thích nhất để tạo một bó hoa nhỏ.</p><div class="flower-grid" id="flowers"></div><div class="status" id="status">Đã chọn 0/3 bông hoa</div>`,i);
+ const choices=['🌷','🌸','🌼','🌹','🪻','🌻','🌺','💐','🌱'];let picked=[];
+ const box=$('#flowers');
+ choices.forEach(f=>{
+  const b=btn(f,()=>{
+   if(picked.includes(f)){picked=picked.filter(x=>x!==f);b.classList.remove('selected')}
+   else if(picked.length<3){picked.push(f);b.classList.add('selected')}
+   msg(`Đã chọn ${picked.length}/3 bông hoa`);
+   if(picked.length===3){
+    const bouquet=picked.join(' ');
+    render(`<div class="center"><div class="eyebrow">YOUR FLOWER BOUQUET</div><div class="emoji">${bouquet}</div><h2>Một bó hoa dành cho cậu</h2><p>Không cần dịp đặc biệt mới có thể tặng ai đó một điều dễ thương.</p></div>`,i);
+    screen.appendChild(actions(btn('Nhận bó hoa ♡',()=>reward(i,'Mong rằng hôm nay của cậu có thêm một chút niềm vui.'))));
+   }
+  },'flower');box.appendChild(b);
+ });
+}
 
-  if (!AudioContextClass) {
-    alert('Trình duyệt này chưa hỗ trợ phát nhạc. Cậu thử dùng Chrome nhé.');
-    return;
-  }
-
-  if (!audioContext) audioContext = new AudioContextClass();
-
-  audioContext.resume().then(() => {
-    musicOn = true;
-    document.getElementById('musicBtn').textContent = '♫';
-    playChord(melody[noteIndex % melody.length]);
-    noteIndex++;
-
-    clearInterval(musicTimer);
-    musicTimer = setInterval(() => {
-      if (!musicOn) return;
-      playChord(melody[noteIndex % melody.length]);
-      noteIndex++;
-    }, 1900);
+/* 03 — GHÉP CẶP */
+function memoryGame(i){
+ const symbols=['🐱','🌷','🍓','🎀','🌙','🧸','🍒','💗'];
+ let deck=[...symbols,...symbols].sort(()=>Math.random()-.5),open=[],matched=new Set(),moves=0,lock=false;
+ render(`<div class="eyebrow">CHAPTER 03 · SWEET MEMORY</div><h2>Ghép những cặp giống nhau</h2><p>Lật hai thẻ mỗi lượt. Tìm đủ 8 cặp là thắng!</p>
+ <div class="game-stat"><span>Lượt đi</span><b id="moves">0</b><span>Đã ghép</span><b id="pairs">0/8</b></div><div class="gamebox"><div class="memory-grid" id="memory"></div></div><div class="status" id="status"></div>`,i);
+ const grid=$('#memory');
+ function draw(){
+  grid.innerHTML='';
+  deck.forEach((v,n)=>{
+   const b=btn(matched.has(n)?v:open.includes(n)?v:'♡',()=>{
+    if(lock||matched.has(n)||open.includes(n))return;
+    open.push(n);draw();
+    if(open.length===2){
+     moves++;$('#moves').textContent=moves;
+     if(deck[open[0]]===deck[open[1]]){
+      open.forEach(k=>matched.add(k));open=[];$('#pairs').textContent=`${matched.size/2}/8`;draw();
+      if(matched.size===16)reward(i,'Cậu tìm được hết những cặp giống nhau rồi. Đôi khi điều nhỏ bé nhất lại khiến ta mỉm cười.');
+     }else{
+      lock=true;const previous=[...open];
+      const timer=setTimeout(()=>{open=[];lock=false;draw()},650);
+      cleanup=()=>clearTimeout(timer);
+     }
+    }
+   },'card');
+   if(open.includes(n))b.classList.add('open');
+   if(matched.has(n))b.classList.add('matched');
+   grid.appendChild(b);
   });
+ }
+ draw();
 }
 
-function stopMusic() {
-  musicOn = false;
-  clearInterval(musicTimer);
-  document.getElementById('musicBtn').textContent = '♪';
-}
-
-document.getElementById('musicBtn').addEventListener('click', () => {
-  if (musicOn) {
-    stopMusic();
-  } else {
-    startMusic();
+/* 04 — ĐOÁN SINH NHẬT TỚ */
+function birthday(i){
+ render(`<div class="center"><div class="eyebrow">CHAPTER 04 · GUESS MY BIRTHDAY</div><div class="emoji">🎂</div><h2>Cậu có nhớ sinh nhật tớ không?</h2>
+ <p>Chọn ngày và tháng cậu đoán nhé. Nếu chưa đúng, tớ sẽ bật mí một chút!</p></div>
+ <div class="gamebox"><label>Ngày</label><select id="birthDay" style="width:100%;padding:13px;border:1px solid #edcedb;border-radius:12px;background:white;color:#59434e"></select>
+ <label>Tháng</label><select id="birthMonth" style="width:100%;padding:13px;border:1px solid #edcedb;border-radius:12px;background:white;color:#59434e"></select></div><div class="status" id="status"></div><div id="birthdayActions" class="actions"></div>`,i);
+ for(let d=1;d<=31;d++)$('#birthDay').add(new Option(String(d).padStart(2,'0'),d));
+ for(let m=1;m<=12;m++)$('#birthMonth').add(new Option(String(m).padStart(2,'0'),m));
+ $('#birthdayActions').append(btn('Đoán thử ♡',()=>{
+  const d=+$('#birthDay').value,m=+$('#birthMonth').value;
+  if(d===21&&m===4){
+   render(`<div class="center"><div class="emoji">🎉🎂💗</div><h2>Đúng rồi!</h2><p>Sinh nhật tớ là <b>21/04</b> đó.</p><p>Cậu nhớ được thì tớ vui lắm, còn nếu không nhớ cũng không sao đâu :))</p></div>`,i);
+   screen.appendChild(actions(btn('Mở quà sinh nhật',()=>reward(i,'Chiếc bánh nhỏ này dành cho cậu — người vừa vượt qua thử thách sinh nhật của tớ!'))));
+  }else{
+   msg('Chưa đúng rồi :)) Gợi ý: tháng sinh của tớ là tháng 4, thử lại nhé!');
   }
-});
+ }));
+}
 
-/* MỞ ĐẦU: CHẠM VÀO NÚT THÌ KÍCH HOẠT NHẠC */
-document.querySelector('#s1 .primary').addEventListener('click', () => {
-  if (!musicOn) startMusic();
-});
+/* 05 — TÌM MÈO */
+function kitty(i){
+ let found=false;
+ render(`<div class="eyebrow">CHAPTER 05 · FIND THE KITTY</div><h2>Mèo con đang trốn đâu nhỉ? 🐱</h2><p>Nhấn vào các ô để tìm mèo. Cậu có 6 lượt tìm nhé!</p>
+ <div class="grid" id="kittyGrid"></div><div class="status" id="status">Còn 6 lượt tìm</div>`,i);
+ const target=Math.floor(Math.random()*9);let tries=6;
+ const g=$('#kittyGrid');
+ for(let n=0;n<9;n++){
+  const b=btn('🌿',()=>{
+   if(found||b.dataset.used)return;
+   b.dataset.used='1';tries--;
+   if(n===target){
+    found=true;b.textContent='🐱';
+    render(`<div class="center"><div class="emoji">🐱</div><h2>Tìm thấy mèo con rồi!</h2><p>Nó đang trốn ở đây chờ cậu đó.</p></div>`,i);
+    screen.appendChild(actions(btn('Vuốt ve mèo con ♡',()=>reward(i,'Mèo con đã được tìm thấy! Chương này chỉ cần một chút kiên nhẫn thôi.'))));
+   }else{b.textContent=['🌸','🍓','🧸','✨'][Math.floor(Math.random()*4)];msg(`Chưa phải rồi! Còn ${tries} lượt.`);if(tries===0)msg('Hết lượt rồi, nhưng cậu có thể thử lại.');}
+  },'choice');g.appendChild(b);
+ }
+ screen.appendChild(actions(btn('Chơi lại',()=>kitty(i),'secondary')));
+}
 
-/* ĐẢM BẢO TRANG KHỞI ĐỘNG Ở CHƯƠNG 1 */
-nextScreen(1);
+/* 06 — VÒNG QUAY */
+function luckyWheel(i){
+ render(`<div class="eyebrow">CHAPTER 06 · LUCKY WHEEL</div><h2>Vòng quay may mắn 🎡</h2><p>Quay một vòng xem hôm nay cậu nhận được món quà nào nhé.</p>
+ <div class="wheel" id="wheel">🎁</div><div class="status" id="status">Sẵn sàng chưa nào?</div><div class="actions" id="wheelActions"></div>`,i);
+ const prizes=['Một bông hoa 🌷','Một chiếc kẹo 🍬','Một trái tim 💗','Một lời chúc ✨','Một món quà 🎁','Một cái ôm từ xa 🧸'];
+ let spinning=false;
+ $('#wheelActions').append(btn('Quay nào!',()=>{
+  if(spinning)return;spinning=true;
+  $('#wheel').style.transform=`rotate(${1440+Math.random()*720}deg)`;
+  setTimeout(()=>{spinning=false;const prize=prizes[Math.floor(Math.random()*prizes.length)];msg('Cậu nhận được: '+prize);$('#wheelActions').innerHTML='';$('#wheelActions').append(btn('Nhận quà ♡',()=>reward(i,'Phần quà của cậu là: '+prize+'. Mong cậu luôn có những điều nhỏ bé để vui.')))},1400);
+ }));
+}
+
+/* 07 — GHÉP TRANH */
+function puzzleGame(i){
+ let board=[1,2,3,4,5,6,7,8,0];
+ for(let k=0;k<100;k++){
+  const z=board.indexOf(0),opts=[z-3,z+3,...(z%3?[z-1]:[]),...(z%3<2?[z+1]:[])].filter(x=>x>=0&&x<9&&Math.abs(Math.floor(x/3)-Math.floor(z/3))+Math.abs(x%3-z%3)===1);
+  const n=opts[Math.floor(Math.random()*opts.length)];[board[z],board[n]]=[board[n],board[z]];
+ }
+ let moves=0;
+ render(`<div class="eyebrow">CHAPTER 07 · PUZZLE LOVE</div><h2>Ghép những mảnh tranh</h2><p>Chạm ô cạnh ô trống để đưa các số về đúng thứ tự. Cậu có thể chơi thoải mái.</p><div class="game-stat"><span>Số lượt</span><b id="moves">0</b></div><div class="puzzle" id="puzzle"></div><div class="status" id="status"></div>`,i);
+ const g=$('#puzzle');
+ function draw(){
+  g.innerHTML='';
+  board.forEach((v,n)=>{
+   const b=btn(v===0?'♡':v,()=>{
+    if(v===0)return;
+    const z=board.indexOf(0);
+    if(Math.abs(Math.floor(n/3)-Math.floor(z/3))+Math.abs(n%3-z%3)!==1)return;
+    [board[z],board[n]]=[board[n],board[z]];moves++;$('#moves').textContent=moves;draw();
+    if(board.every((x,j)=>x===(j+1)%9))reward(i,'Cậu đã ghép hoàn chỉnh bức tranh. Từng chút một, mọi thứ lại về đúng vị trí.');
+   },'');
+   if(v===0)b.classList.add('blank');
+   g.appendChild(b);
+  });
+ }
+ draw();
+}
+
+/* 08 — CÂU ĐỐ NHỎ */
+function littleQuiz(i){
+ render(`<div class="eyebrow">CHAPTER 08 · LITTLE QUIZ</div><h2>Một câu hỏi nho nhỏ 💌</h2><p>Điều gì làm một cuộc trò chuyện trở nên dễ chịu nhất?</p><div class="grid" id="quiz"></div><div class="status" id="status"></div>`,i);
+ const options=[
+  ['A','Luôn phải nói đúng'],
+  ['B','Biết lắng nghe nhau'],
+  ['C','Không bao giờ bất đồng']
+ ];
+ options.forEach(([letter,label])=>{
+  $('#quiz').appendChild(btn(letter+'. '+label,()=>{
+   if(letter==='B')reward(i,'Đúng rồi! Biết lắng nghe và tôn trọng nhau quan trọng hơn việc lúc nào cũng phải đúng.');
+   else msg('Thử nghĩ thêm nhé. Đôi khi lắng nghe cũng là một cách quan tâm.');
+  },'choice'));
+ });
+}
+
+/* 09 — MÁY GẮP QUÀ */
+function clawGame(i){
+ let tries=3;
+ render(`<div class="eyebrow">CHAPTER 09 · TINY CLAW</div><h2>Máy gắp quà 🧸</h2><p>Chọn một hộp quà để thử vận may. Cậu có 3 lần gắp!</p><div class="grid" id="claw"></div><div class="status" id="status">Còn 3 lượt</div>`,i);
+ const prizes=['🧸','🎀','🍓','💗','🌷','🎁'];
+ prizes.sort(()=>Math.random()-.5).forEach(prize=>{
+  const b=btn('🎁',()=>{
+   if(tries<=0||b.dataset.open)return;
+   b.dataset.open='1';b.textContent=prize;tries--;
+   msg(`Cậu gắp được ${prize}! Còn ${tries} lượt.`);
+   if(tries===0||$('#claw').querySelectorAll('[data-open="1"]').length>=2){
+    $('#claw').querySelectorAll('button').forEach(x=>x.disabled=true);
+    screen.appendChild(actions(btn('Nhận quà',()=>reward(i,'Không quan trọng món quà lớn hay nhỏ, điều quan trọng là niềm vui khi mở nó.'))));
+   }
+  },'choice');$('#claw').appendChild(b);
+ });
+}
+
+/* 10 — BONG BÓNG */
+function bubblePop(i){
+ let count=0,total=12;
+ render(`<div class="eyebrow">CHAPTER 10 · BUBBLE POP</div><h2>Bong bóng niềm vui 🫧</h2><p>Chạm vào 12 bong bóng để làm chúng nở thành những hạt sáng nhé.</p><div class="game-stat"><span>Đã chạm</span><b id="popped">0/12</b></div><div class="gamebox"><div class="bubbles" id="bubbles"></div></div><div class="status" id="status"></div>`,i);
+ const g=$('#bubbles');
+ for(let n=0;n<total;n++){
+  const b=btn(['🫧','💗','✨','🩷'][n%4],()=>{
+   if(b.dataset.done)return;b.dataset.done='1';b.textContent='✨';b.disabled=true;count++;$('#popped').textContent=`${count}/12`;
+   if(count===total)reward(i,'Cậu đã làm sáng cả bầu trời bong bóng rồi. Mong những ngày tới của cậu cũng có nhiều niềm vui.');
+  },'bubble');g.appendChild(b);
+ }
+}
+
+/* 11 — NHẬT KÝ */
+function journal(i){
+ render(`<div class="eyebrow">CHAPTER 11 · LITTLE JOURNAL</div><h2>Một trang nhật ký nhỏ 📖</h2>
+ <div class="letter"><p>Đôi khi tớ nghĩ, mọi chuyện không phải lúc nào cũng kết thúc vì hai người không còn quý nhau. Có lúc chỉ là bận rộn hơn, ít chia sẻ hơn, rồi dần dần chẳng biết bắt đầu nói chuyện từ đâu.</p>
+ <p>Tớ không biết cậu nghĩ gì về khoảng thời gian ấy. Nhưng tớ vẫn trân trọng những điều tốt đẹp mà hai đứa từng có.</p><p class="script">— một dòng nhỏ dành cho cậu</p></div>
+ <div class="actions" id="journalActions"></div>`,i);
+ $('#journalActions').append(btn('Đọc xong ♡',()=>reward(i,'Cảm ơn cậu đã dành thời gian đọc đến đây.')));
+}
+
+/* 12 — MẬT MÃ SINH NHẬT CÔ ẤY */
+function secretDate(i){
+ render(`<div class="center"><div class="eyebrow">CHAPTER 12 · SECRET DATE</div><div class="emoji">🔐💗</div><h2>THE LITTLE SECRET</h2><p>“Có một ngày đặc biệt mà tớ tự hỏi liệu cậu còn nhớ không…”</p></div>
+ <div class="gamebox"><label for="pin">Nhập mật mã gồm 4 chữ số</label><input id="pin" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off"><p class="muted">Gợi ý: ngày trước, tháng sau.</p></div><div class="status" id="status"></div><div class="actions" id="pinActions"></div>`,i);
+ $('#pinActions').append(btn('Mở khóa ♡',()=>{
+  if($('#pin').value.trim()==='0607'){
+   render(`<div class="center"><div class="emoji">🎉💐💗</div><div class="eyebrow">SECRET UNLOCKED</div><h2>Cậu nhớ ra rồi!</h2><p>Ngày <b>06/07</b> — một ngày đặc biệt của cậu.</p><p>Đôi khi một con số có thể khiến mình nhớ đến rất nhiều điều.</p></div>`,i);
+   screen.appendChild(actions(btn('Mở món quà bí mật',()=>reward(i,'Mật mã chính xác là 0607. Tớ muốn dành riêng một góc nhỏ trong hành trình này cho ngày đặc biệt của cậu.'))));
+  }else{
+   msg('Chưa đúng rồi nè :)) Thử nhập ngày và tháng theo dạng DDMM nhé.');
+   $('#pin').value='';
+  }
+ }));
+}
+
+/* 13 — LÁ THƯ XIN LỖI */
+function apology(i){
+ render(`<div class="center"><div class="eyebrow">CHAPTER 13 · THE APOLOGY</div><div class="emoji">💌</div><h2>Tớ có vài điều muốn nói</h2><p class="muted">Một lá thư nhỏ, không cần câu trả lời ngay.</p></div>
+ <div class="letter" id="letter"><p>Gửi cậu,</p><p>Tớ không biết bắt đầu từ đâu cho tự nhiên nữa :)) Nhưng có vài điều tớ đã muốn nói với cậu từ lâu.</p><p>Tớ xin lỗi vì những lúc tớ chưa đủ tinh tế, vì những điều tớ đã làm khiến mọi chuyện giữa hai đứa dần trở nên xa cách. Tớ biết chỉ nói xin lỗi thôi thì không thể thay đổi mọi thứ, và tớ cũng không muốn giả vờ như chưa có chuyện gì xảy ra.</p><p>Tớ vẫn trân trọng khoảng thời gian chúng ta từng có. Những cuộc trò chuyện, những lúc vui vẻ và cả những điều bình thường mà khi đã xa rồi, tớ mới nhận ra mình từng quý đến thế nào.</p><p>Tớ không viết những dòng này để bắt cậu phải quay lại, cũng không mong cậu phải trả lời ngay. Tớ chỉ muốn cậu biết rằng tớ thật sự tiếc về những điều chưa tốt của mình, và nếu có cơ hội, tớ muốn học cách lắng nghe, hiểu cậu hơn và bắt đầu lại bằng những cuộc trò chuyện bình thường.</p><p>Nếu cậu không còn cảm giác như trước, tớ cũng sẽ tôn trọng điều đó. Dù thế nào, tớ vẫn mong cậu vui vẻ và gặp được thật nhiều điều tốt đẹp.</p><p>— Tớ ♡</p></div>
+ <div class="actions" id="letterActions"></div>`,i);
+ $('#letterActions').append(btn('Tớ đã đọc xong',()=>reward(i,'Cảm ơn cậu đã đọc những điều tớ muốn nói. Cậu không cần phải trả lời ngay đâu.')));
+}
+
+/* 14 — KẾT THÚC */
+function finalWish(i){
+ render(`<div class="center"><div class="eyebrow">CHAPTER 14 · ONE LAST WISH</div><div class="emoji">🌙💗✨</div><h2>Trước khi hành trình kết thúc…</h2><p>Tớ vẫn muốn có cơ hội nói chuyện với cậu một lần nữa. Nhưng tớ cũng muốn biết điều gì khiến cậu cảm thấy thoải mái nhất.</p><p class="muted">Cậu có thể chọn điều mình thật sự muốn. Không có câu trả lời nào khiến cậu phải thấy có lỗi cả.</p></div>
+ <div class="grid" id="finalChoices"></div><div class="status" id="status"></div>`,i);
+ const opts=[
+  ['💗','Tớ muốn nói chuyện lại'],
+  ['🌷','Cho tớ thêm thời gian'],
+  ['🌙','Tớ muốn dừng lại']
+ ];
+ opts.forEach(([emoji,label])=>{
+  $('#finalChoices').appendChild(btn(emoji+' '+label,()=>{
+   const response=label==='Tớ muốn nói chuyện lại'
+    ?'Cảm ơn cậu đã cho tớ cơ hội. Mình cứ bắt đầu bằng những cuộc trò chuyện bình thường nhé, không cần vội.'
+    :label==='Cho tớ thêm thời gian'
+    ?'Tớ hiểu mà. Cậu cứ dành thời gian cho bản thân nhé. Tớ sẽ tôn trọng điều cậu cần.'
+    :'Tớ hiểu và tôn trọng quyết định của cậu. Cảm ơn cậu vì những điều tốt đẹp đã từng có. Tớ mong cậu luôn ổn.';
+   render(`<div class="center"><div class="emoji">🌌</div><div class="eyebrow">THANK YOU FOR BEING HERE</div><h2>${label}</h2><div class="letter"><p>${response}</p></div><p class="script">Mong cậu luôn bình yên ♡</p><p class="muted">11/07/2026</p></div>`);
+   screen.appendChild(actions(btn('Xem lại hành trình',showMap,'secondary'),btn('Về trang đầu',start)));
+   confetti();
+  },'choice'));
+ });
+}
+function confetti(){
+ for(let i=0;i<28;i++){
+  const e=document.createElement('span');e.className='floating';
+  e.textContent=['💗','✨','🌸','♡'][Math.floor(Math.random()*4)];
+  e.style.left=Math.random()*100+'%';e.style.animationDuration=(3+Math.random()*4)+'s';e.style.fontSize=(12+Math.random()*17)+'px';
+  $('#sky').appendChild(e);setTimeout(()=>e.remove(),7500);
+ }
+}
+setInterval(()=>{
+ if(Math.random()>.35){
+  const e=document.createElement('span');e.className='floating';e.textContent=['♡','✧','🌸','·'][Math.floor(Math.random()*4)];
+  e.style.left=Math.random()*100+'%';e.style.animationDuration=(8+Math.random()*8)+'s';e.style.fontSize=(12+Math.random()*14)+'px';
+  $('#sky').appendChild(e);setTimeout(()=>e.remove(),17000);
+ }
+},1000);
+
+/* Nhạc piano tạo bằng Web Audio API */
+let noteIndex=0;
+const notes=[261.63,329.63,392,329.63,293.66,349.23,440,349.23];
+function playNote(freq,duration=.65){
+ if(!audioCtx||!musicOn)return;
+ const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+ osc.type='sine';osc.frequency.value=freq;
+ gain.gain.setValueAtTime(.0001,audioCtx.currentTime);
+ gain.gain.exponentialRampToValueAtTime(.075,audioCtx.currentTime+.04);
+ gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+duration);
+ osc.connect(gain);gain.connect(audioCtx.destination);
+ osc.start();osc.stop(audioCtx.currentTime+duration+.03);
+}
+function musicLoop(){
+ if(!musicOn)return;
+ playNote(notes[noteIndex%notes.length],.7);
+ if(noteIndex%4===0)playNote(notes[(noteIndex+2)%notes.length]/2,1.3);
+ noteIndex++;
+ musicTimer=setTimeout(musicLoop,650);
+}
+async function toggleMusic(){
+ try{
+  if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended')await audioCtx.resume();
+  musicOn=!musicOn;
+  $('#musicBtn').textContent=musicOn?'♫ Tắt nhạc':'♫ Bật nhạc';
+  if(musicOn)musicLoop();else clearTimeout(musicTimer);
+ }catch(e){$('#musicBtn').textContent='Không phát được nhạc';}
+}
+$('#musicBtn').addEventListener('click',toggleMusic);
+start();
 </script>
-
 </body>
 </html>
