@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Story of Us ♡</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --cream: #fff8f1;
+  --pink: #f5dfe2;
+  --rose: #c78e9a;
+  --deep: #77545d;
+  --ink: #6f5355;
+  --gold: #d6b58a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #d8a5ae, #d8bd92);
+  z-index: 100;
+  transition: width 1s ease;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 22px;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.035);
+  transition:
+    opacity 1s ease,
+    transform 1.2s cubic-bezier(.2,.7,.2,1),
+    visibility 1s;
+}
+
+.screen.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.screen::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 15% 15%, #f4dce380, transparent 45%),
+    radial-gradient(ellipse at 90% 85%, #ead9c580, transparent 45%);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 720px);
+  margin: auto;
+  text-align: center;
+  animation: rise 1.1s both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #ad8189;
+  margin-bottom: 24px;
+}
+
+h1, h2, .serif {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: clamp(42px, 8vw, 78px);
+  line-height: 1.15;
+  color: var(--deep);
+}
+
+h2 {
+  font-size: clamp(32px, 6vw, 52px);
+  line-height: 1.25;
+  color: var(--deep);
+}
+
+p {
+  font-size: 14px;
+  line-height: 2;
+  color: #8b7074;
+}
+
+.subtitle {
+  margin-top: 20px;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
+.italic {
+  font-style: italic;
+  color: #b77d8a;
+}
+
+button.primary {
+  border: 1px solid #e4c6ca;
+  border-radius: 999px;
+  padding: 14px 28px;
+  margin-top: 30px;
+  background: #fffaf7cc;
+  color: #805b64;
+  transition: .3s;
+  letter-spacing: .4px;
+}
+
+button.primary:hover {
+  background: #efd6da;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px #c994a522;
+}
+
+.small-note {
+  margin-top: 18px;
+  font-size: 11px;
+  opacity: .7;
+}
+
+.flower {
+  font-size: 43px;
+  margin-bottom: 20px;
+  display: inline-block;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% { transform: translateY(-8px) rotate(4deg); }
+}
+
+.date-card {
+  width: min(100%, 400px);
+  margin: 30px auto;
+  padding: 32px 20px;
+  border: 1px solid #e7d2cc;
+  background: #fffaf5b8;
+  box-shadow: 0 20px 70px #b9918d12;
+  position: relative;
+}
+
+.date-card::before,
+.date-card::after {
+  content: "✿";
+  position: absolute;
+  color: #d5a6ad;
+  font-size: 20px;
+}
+
+.date-card::before { top: 12px; left: 14px; }
+.date-card::after { bottom: 12px; right: 14px; }
+
+.date {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(34px, 7vw, 50px);
+  color: #a97781;
+  margin: 12px 0;
+}
+
+.rule {
+  width: 48px;
+  height: 1px;
+  background: #d6b6ac;
+  margin: 22px auto;
+}
+
+.memory {
+  max-width: 500px;
+  margin: 24px auto 0;
+}
+
+.memory p {
+  margin: 14px 0;
+}
+
+.letter {
+  max-width: 570px;
+  margin: 26px auto 0;
+  padding: clamp(24px, 5vw, 44px);
+  background:
+    linear-gradient(#fffaf3ed, #fffaf3ed),
+    repeating-linear-gradient(
+      transparent 0px,
+      transparent 30px,
+      #e8d5ce 31px
+    );
+  border: 1px solid #ead8cf;
+  box-shadow: 0 25px 70px #9d777014;
+  text-align: left;
+  position: relative;
+}
+
+.letter::before {
+  content: "♡";
+  position: absolute;
+  top: 13px;
+  right: 20px;
+  font-size: 23px;
+  color: #cb9da3;
+}
+
+.letter p {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  line-height: 2.05;
+  color: #795f61;
+  margin-bottom: 15px;
+}
+
+.letter .signature {
+  text-align: right;
+  font-style: italic;
+  color: #b07e87;
+  margin: 0;
+}
+
+.choices {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.choices button {
+  padding: 13px 21px;
+  border: 1px solid #e5c9ce;
+  border-radius: 999px;
+  background: #fffaf5;
+  color: #805d66;
+  transition: .25s;
+}
+
+.choices button:hover {
+  background: #efd8dc;
+  transform: translateY(-2px);
+}
+
+.response {
+  min-height: 26px;
+  margin-top: 22px;
+  font-size: 13px;
+  color: #a67581;
+}
+
+.final-screen {
+  background:
+    radial-gradient(ellipse at 50% 100%, #362a47 0%, #17172e 45%, #101323 100%);
+  color: #fff4f0;
+}
+
+.final-screen::before {
+  background:
+    radial-gradient(circle at 50% 35%, #a17a9c19, transparent 48%),
+    linear-gradient(transparent, #10132355);
+}
+
+.final-screen h2 { color: #fff0ee; }
+.final-screen p { color: #d9c5d8; }
+.final-screen .eyebrow { color: #e3bdcf; }
+
+#sky {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.final-content {
+  position: relative;
+  z-index: 3;
+}
+
+.final-heart {
+  color: #efb9d0;
+  font-size: 32px;
+  animation: heartbeat 2s infinite;
+  margin-bottom: 22px;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.13); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.08); }
+}
+
+.floating-heart {
+  position: fixed;
+  bottom: -30px;
+  z-index: 2;
+  pointer-events: none;
+  animation: floatUp 7s linear forwards;
+  color: #efbdd1;
+  opacity: .8;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: .8; }
+  to { transform: translateY(-110vh) rotate(35deg); opacity: 0; }
+}
+
+.top-controls {
+  position: fixed;
+  right: 18px;
+  top: 18px;
+  z-index: 110;
+  display: flex;
+  gap: 8px;
+}
+
+.control {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #e5d1d0;
+  background: #fffaf0d9;
+  color: #956c76;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+}
+
+.final-screen ~ .top-controls,
+body:has(.final-screen.active) .control {
+  border-color: #4d4565;
+  background: #201e36cc;
+  color: #f2d9e7;
+}
+
+.chapter-label {
+  position: fixed;
+  bottom: 18px;
+  left: 22px;
+  z-index: 10;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #b09191;
+}
+
+.final-screen.active ~ .chapter-label {
+  color: #b9a8ca;
+}
+
+@media (max-width: 480px) {
+  .screen { padding: 66px 20px 48px; }
+  .letter { padding: 27px 22px; }
+  .letter p { font-size: 14px; }
+  .choices { flex-direction: column; align-items: stretch; }
+  .choices button { width: 100%; }
+  .eyebrow { letter-spacing: 3px; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="progress"></div>
+
+<div class="top-controls">
+  <button class="control" id="musicBtn" aria-label="Bật tắt nhạc" title="Bật/tắt nhạc">♫</button>
+  <button class="control" id="restartBtn" aria-label="Bắt đầu lại" title="Bắt đầu lại">↺</button>
+</div>
+
+<div class="chapter-label" id="chapterLabel">A LITTLE STORY OF US · 01 / 05</div>
+
+<!-- CHAPTER 1 -->
+<section class="screen active" id="s1">
+  <div class="content">
+    <div class="eyebrow">A little story of us</div>
+    <div class="flower">🌷</div>
+    <h1>Có một người...</h1>
+    <h2 class="italic">tớ vẫn nhớ.</h2>
+    <p class="subtitle">Và người ấy đang đọc những dòng này.</p>
+    <button class="primary" onclick="nextScreen(2)">Mở câu chuyện ♡</button>
+    <p class="small-note">Một lá thư nhỏ, dành riêng cho cậu.</p>
+  </div>
+</section>
+
+<!-- CHAPTER 2 -->
+<section class="screen" id="s2">
+  <div class="content">
+    <div class="eyebrow">Chapter 02 · The beginning</div>
+    <h2>Cậu còn nhớ<br>ngày ấy không?</h2>
+    <div class="date-card">
+      <p>NGÀY CHÚNG MÌNH QUEN NHAU</p>
+      <div class="date">11 · 07 · 2026</div>
+      <div class="rule"></div>
+      <p class="italic">Một ngày bình thường,<br>nhưng lại trở thành một kỷ niệm đặc biệt.</p>
+    </div>
+    <p>Có những ngày trôi qua rất nhanh,<br>nhưng khi nhớ lại vẫn thấy thật dịu dàng.</p>
+    <button class="primary" onclick="nextScreen(3)">Điều tớ muốn kể →</button>
+  </div>
+</section>
+
+<!-- CHAPTER 3 -->
+<section class="screen" id="s3">
+  <div class="content">
+    <div class="eyebrow">Chapter 03 · Somewhere in time</div>
+    <div class="flower">🕊️</div>
+    <h2>Đôi khi tớ nhớ...</h2>
+    <div class="memory">
+      <p>Nhớ những lần chúng mình nói chuyện thật lâu, kể nhau nghe cả những điều chẳng có gì đặc biệt.</p>
+      <div class="rule"></div>
+      <p>Rồi chẳng biết từ lúc nào, hai đứa dần ít nói với nhau hơn. Mọi thứ cứ thế thay đổi, nhẹ nhàng đến mức có khi chẳng ai nhận ra.</p>
+      <div class="rule"></div>
+      <p class="italic">Tớ không nghĩ mọi kỷ niệm đều cần một cái kết hoàn hảo. Nhưng tớ vẫn trân trọng những điều tốt đẹp chúng mình từng có.</p>
+    </div>
+    <button class="primary" onclick="nextScreen(4)">Đọc lá thư của tớ ♡</button>
+  </div>
+</section>
+
+<!-- CHAPTER 4 -->
+<section class="screen" id="s4">
+  <div class="content">
+    <div class="eyebrow">Chapter 04 · A letter for you</div>
+    <h2>Một chút thật lòng.</h2>
+    <div class="letter">
+      <p id="letterText">Cậu à,</p>
+      <p>Tớ không biết phải bắt đầu thế nào cho thật tự nhiên. Có lẽ chỉ là gần đây tớ nhớ đến những lúc chúng mình còn nói chuyện với nhau nhiều như trước.</p>
+      <p>Tớ biết mọi thứ đã khác đi. Tớ không muốn nhắc lại chuyện cũ để khiến cậu khó xử, cũng không mong cậu phải trả lời ngay điều gì.</p>
+      <p>Chỉ là tớ nghĩ, nếu cả hai vẫn thấy thoải mái, chúng mình có thể thử bắt đầu bằng một cuộc trò chuyện nhỏ. Không cần vội vàng, cũng chẳng cần hứa trước điều gì.</p>
+      <p>Nếu cậu không muốn thì tớ vẫn tôn trọng quyết định của cậu. Dù thế nào, tớ vẫn mong cậu có thật nhiều niềm vui.</p>
+      <p class="signature">— Từ tớ, với sự chân thành ♡</p>
+    </div>
+    <button class="primary" onclick="nextScreen(5)">Đến lời cuối cùng →</button>
+  </div>
+</section>
+
+<!-- CHAPTER 5 -->
+<section class="screen final-screen" id="s5">
+  <canvas id="sky"></canvas>
+  <div class="content final-content">
+    <div class="eyebrow">Chapter 05 · A little wish</div>
+    <div class="final-heart">♡</div>
+    <h2>Nếu cậu cũng muốn...</h2>
+    <p style="margin-top:20px">
+      Chúng mình có thể nói chuyện lại nhé?<br>
+      Cứ từ từ thôi, như hai người bạn bắt đầu hiểu nhau thêm lần nữa.
+    </p>
+    <div class="choices">
+      <button onclick="chooseAnswer('yes')">Ừ, mình nói chuyện nhé ♡</button>
+      <button onclick="chooseAnswer('time')">Tớ cần thêm thời gian</button>
+    </div>
+    <div class="response" id="response"></div>
+    <p class="small-note" style="margin-top:30px">
+      Cảm ơn cậu đã đọc đến đây.<br>
+      Mong những ngày của cậu luôn dịu dàng.
+    </p>
+    <button class="primary" onclick="restartStory()">Đọc lại từ đầu ↺</button>
+  </div>
+</section>
+
+<script>
+/* CHUYỂN CHƯƠNG */
+let currentScreen = 1;
+const totalScreens = 5;
+
+function nextScreen(number) {
+  document.querySelectorAll('.screen').forEach(screen => {
+    screen.classList.remove('active');
+  });
+
+  currentScreen = number;
+  document.getElementById('s' + number).classList.add('active');
+
+  document.getElementById('progress').style.width =
+    ((number - 1) / (totalScreens - 1) * 100) + '%';
+
+  document.getElementById('chapterLabel').textContent =
+    'A LITTLE STORY OF US · 0' + number + ' / 05';
+
+  if (number === 5) {
+    startStars();
+    heartInterval = setInterval(createHeart, 1600);
+  } else {
+    clearInterval(heartInterval);
+  }
+
+  if (number === 4) {
+    revealLetter();
+  }
+}
+
+/* HIỆU ỨNG CHỮ TRONG THƯ */
+let letterRevealed = false;
+
+function revealLetter() {
+  if (letterRevealed) return;
+  letterRevealed = true;
+
+  const paragraphs = document.querySelectorAll('#s4 .letter p');
+  paragraphs.forEach((p, index) => {
+    p.style.opacity = '0';
+    p.style.transform = 'translateY(8px)';
+    p.style.transition = `opacity .8s ease ${index * .32}s, transform .8s ease ${index * .32}s`;
+
+    requestAnimationFrame(() => {
+      p.style.opacity = '1';
+      p.style.transform = 'translateY(0)';
+    });
+  });
+}
+
+/* PHẢN HỒI CUỐI */
+function chooseAnswer(type) {
+  const response = document.getElementById('response');
+
+  if (type === 'yes') {
+    response.textContent =
+      'Cảm ơn cậu. Mình cứ bắt đầu bằng một cuộc trò chuyện nhé. ♡';
+  } else {
+    response.textContent =
+      'Không sao đâu. Cậu cứ dành thời gian cho bản thân nhé. ♡';
+  }
+}
+
+/* BẮT ĐẦU LẠI */
+function restartStory() {
+  letterRevealed = false;
+  clearInterval(heartInterval);
+  document.getElementById('response').textContent = '';
+  nextScreen(1);
+}
+
+document.getElementById('restartBtn').addEventListener('click', restartStory);
+
+/* BẦU TRỜI SAO */
+const canvas = document.getElementById('sky');
+const ctx = canvas.getContext('2d');
+let stars = [];
+let animationStarted = false;
+let heartInterval;
+
+function resizeCanvas() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  stars = Array.from({length: 130}, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 1.6 + .3,
+    phase: Math.random() * Math.PI * 2,
+    speed: Math.random() * .025 + .006
+  }));
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+  stars.forEach(star => {
+    star.phase += star.speed;
+    const alpha = .25 + (Math.sin(star.phase) + 1) * .35;
+
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 230, 241, ${alpha})`;
+    ctx.fill();
+  });
+
+  if (animationStarted) {
+    requestAnimationFrame(drawStars);
+  }
+}
+
+function startStars() {
+  if (animationStarted) return;
+  animationStarted = true;
+  resizeCanvas();
+  drawStars();
+}
+
+window.addEventListener('resize', () => {
+  if (animationStarted) resizeCanvas();
+});
+
+/* TRÁI TIM BAY NHẸ */
+function createHeart() {
+  if (!document.getElementById('s5').classList.contains('active')) return;
+
+  const heart = document.createElement('div');
+  heart.className = 'floating-heart';
+  heart.textContent = Math.random() > .5 ? '♡' : '♥';
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.fontSize = (10 + Math.random() * 14) + 'px';
+  heart.style.animationDuration = (5 + Math.random() * 4) + 's';
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 9500);
+}
+
+/* NHẠC PIANO TẠO BẰNG WEB AUDIO, KHÔNG CẦN TẢI FILE */
+let audioContext = null;
+let musicOn = false;
+let musicTimer = null;
+let noteIndex = 0;
+
+const melody = [
+  [261.63, 329.63, 392.00],
+  [293.66, 349.23, 440.00],
+  [261.63, 329.63, 392.00],
+  [246.94, 329.63, 369.99],
+  [220.00, 293.66, 349.23],
+  [261.63, 329.63, 392.00],
+  [196.00, 293.66, 392.00],
+  [220.00, 329.63, 440.00]
+];
+
+function playChord(notes) {
+  if (!audioContext || !musicOn) return;
+
+  const now = audioContext.currentTime;
+
+  notes.forEach((frequency, index) => {
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = 'sine';
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(index === 0 ? .055 : .026, now + .08);
+    gain.gain.exponentialRampToValueAtTime(.0001, now + 2.1);
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start(now);
+    oscillator.stop(now + 2.2);
+  });
+}
+
+function startMusic() {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContextClass) {
+    alert('Trình duyệt này chưa hỗ trợ phát nhạc. Cậu thử dùng Chrome nhé.');
+    return;
+  }
+
+  if (!audioContext) audioContext = new AudioContextClass();
+
+  audioContext.resume().then(() => {
+    musicOn = true;
+    document.getElementById('musicBtn').textContent = '♫';
+    playChord(melody[noteIndex % melody.length]);
+    noteIndex++;
+
+    clearInterval(musicTimer);
+    musicTimer = setInterval(() => {
+      if (!musicOn) return;
+      playChord(melody[noteIndex % melody.length]);
+      noteIndex++;
+    }, 1900);
+  });
+}
+
+function stopMusic() {
+  musicOn = false;
+  clearInterval(musicTimer);
+  document.getElementById('musicBtn').textContent = '♪';
+}
+
+document.getElementById('musicBtn').addEventListener('click', () => {
+  if (musicOn) {
+    stopMusic();
+  } else {
+    startMusic();
+  }
+});
+
+/* MỞ ĐẦU: CHẠM VÀO NÚT THÌ KÍCH HOẠT NHẠC */
+document.querySelector('#s1 .primary').addEventListener('click', () => {
+  if (!musicOn) startMusic();
+});
+
+/* ĐẢM BẢO TRANG KHỞI ĐỘNG Ở CHƯƠNG 1 */
+nextScreen(1);
+</script>
+
+</body>
+</html>
